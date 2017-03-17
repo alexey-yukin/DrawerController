@@ -317,10 +317,27 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     By default, this value is set to YES. Enabling `shouldStretchDrawer` will give the pan a gradual asymptotic stopping point much like `UIScrollView` behaves. Note that if this value is set to YES, the `drawerVisualStateBlock` can be passed a `percentVisible` greater than 1.0, so be sure to handle that case appropriately.
     */
     open var shouldStretchDrawer = true
+
     open var drawerDampingFactor = DrawerDefaultDampingFactor
-    open var shadowRadius = DrawerDefaultShadowRadius
-    open var shadowOpacity = DrawerDefaultShadowOpacity
-    open var shadowOffset = DrawerDefaultShadowOffset
+
+    open var shadowRadius = DrawerDefaultShadowRadius {
+        didSet {
+            self.updateShadowForCenterView()
+        }
+    }
+
+    open var shadowOpacity = DrawerDefaultShadowOpacity {
+        didSet {
+            self.updateShadowForCenterView()
+        }
+    }
+
+    open var shadowOffset = DrawerDefaultShadowOffset {
+        didSet {
+            self.updateShadowForCenterView()
+        }
+    }
+
     open var bezelRange = DrawerBezelRange
     
     /**
