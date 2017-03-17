@@ -733,23 +733,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             self.centerContainerView.layer.shadowRadius = shadowRadius
             self.centerContainerView.layer.shadowOpacity = shadowOpacity
             self.centerContainerView.layer.shadowOffset = shadowOffset
-            
-            /** In the event this gets called a lot, we won't update the shadowPath
-            unless it needs to be updated (like during rotation) */
-            if let shadowPath = centerContainerView.layer.shadowPath {
-                let currentPath = shadowPath.boundingBoxOfPath
-
-                if currentPath.equalTo(centerContainerView.bounds) == false {
-                    centerContainerView.layer.shadowPath = UIBezierPath(rect: centerContainerView.bounds).cgPath
-                }
-            } else {
-                self.centerContainerView.layer.shadowPath = UIBezierPath(rect: self.centerContainerView.bounds).cgPath
-            }
-        } else if self.centerContainerView.layer.shadowPath != nil {
+        } else if self.centerContainerView.layer.shadowOpacity != 0.0 {
             self.centerContainerView.layer.shadowRadius = 0.0
             self.centerContainerView.layer.shadowOpacity = 0.0
             self.centerContainerView.layer.shadowOffset = .zero
-            self.centerContainerView.layer.shadowPath = nil
             self.centerContainerView.layer.masksToBounds = true
         }
     }
@@ -919,8 +906,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             self.centerContainerView.addSubview(self._centerViewController!.view)
             self.childControllerContainerView.bringSubview(toFront: self.centerContainerView)
             self._centerViewController!.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            self.updateShadowForCenterView()
-            
+
             if animated == false {
                 // If drawer is offscreen, then viewWillAppear: will take care of this
                 if self.view.window != nil {
@@ -1374,7 +1360,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.updateShadowForCenterView()
         self.centerViewController?.endAppearanceTransition()
         
         if self.openSide == .left {
@@ -1445,24 +1430,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 self.resetDrawerVisualState(for: self.openSide)
             }
         }
-        
-        coordinator.animate(alongsideTransition: { (context) -> Void in
-            //We need to support the shadow path rotation animation
-            //Inspired from here: http://blog.radi.ws/post/8348898129/calayers-shadowpath-and-uiview-autoresizing
-            if self.showsShadows {
-                let oldShadowPath = self.centerContainerView.layer.shadowPath
-                
-                self.updateShadowForCenterView()
-                
-                if oldShadowPath != nil {
-                    let transition = CABasicAnimation(keyPath: "shadowPath")
-                    transition.fromValue = oldShadowPath
-                    transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    transition.duration = context.transitionDuration
-                    self.centerContainerView.layer.add(transition, forKey: "transition")
-                }
-            }
-        }, completion:nil)
     }
     
     // MARK: - UIGestureRecognizerDelegate
