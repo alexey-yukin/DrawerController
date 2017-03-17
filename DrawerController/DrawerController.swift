@@ -132,6 +132,7 @@ private let DrawerMinimumAnimationDuration: CGFloat = 0.15
 private let DrawerDefaultDampingFactor: CGFloat = 1.0
 private let DrawerDefaultShadowRadius: CGFloat = 10.0
 private let DrawerDefaultShadowOpacity: Float = 0.8
+private let DrawerDefaultShadowOffset: CGSize = .zero
 
 private let DrawerPanVelocityXAnimationThreshold: CGFloat = 200.0
 
@@ -319,6 +320,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     open var drawerDampingFactor = DrawerDefaultDampingFactor
     open var shadowRadius = DrawerDefaultShadowRadius
     open var shadowOpacity = DrawerDefaultShadowOpacity
+    open var shadowOffset = DrawerDefaultShadowOffset
     open var bezelRange = DrawerBezelRange
     
     /**
@@ -713,6 +715,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             self.centerContainerView.layer.masksToBounds = false
             self.centerContainerView.layer.shadowRadius = shadowRadius
             self.centerContainerView.layer.shadowOpacity = shadowOpacity
+            self.centerContainerView.layer.shadowOffset = shadowOffset
             
             /** In the event this gets called a lot, we won't update the shadowPath
             unless it needs to be updated (like during rotation) */
@@ -728,6 +731,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         } else if self.centerContainerView.layer.shadowPath != nil {
             self.centerContainerView.layer.shadowRadius = 0.0
             self.centerContainerView.layer.shadowOpacity = 0.0
+            self.centerContainerView.layer.shadowOffset = .zero
             self.centerContainerView.layer.shadowPath = nil
             self.centerContainerView.layer.masksToBounds = true
         }
