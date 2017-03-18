@@ -174,7 +174,7 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         case CenterViewControllerSection.leftViewState.rawValue:
             cell.textLabel?.text = "Enabled"
             
-            if self.evo_drawerController?.leftDrawerViewController != nil {
+            if self.drawerController?.leftDrawerViewController != nil {
                 cell.accessoryType = .checkmark
                 cell.textLabel?.textColor = selectedColor
             } else {
@@ -184,7 +184,7 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
         case CenterViewControllerSection.rightViewState.rawValue:
             cell.textLabel?.text = "Enabled"
             
-            if self.evo_drawerController?.rightDrawerViewController != nil {
+            if self.drawerController?.rightDrawerViewController != nil {
                 cell.accessoryType = .checkmark
                 cell.textLabel?.textColor = selectedColor
             } else {
@@ -231,20 +231,20 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
             var drawerSide = DrawerSide.none
             
             if (indexPath as NSIndexPath).section == CenterViewControllerSection.leftViewState.rawValue {
-                sideDrawerViewController = self.evo_drawerController?.leftDrawerViewController
+                sideDrawerViewController = self.drawerController?.leftDrawerViewController
                 drawerSide = .left
             } else if (indexPath as NSIndexPath).section == CenterViewControllerSection.rightViewState.rawValue {
-                sideDrawerViewController = self.evo_drawerController?.rightDrawerViewController
+                sideDrawerViewController = self.drawerController?.rightDrawerViewController
                 drawerSide = .right
             }
             
             if sideDrawerViewController != nil {
-                self.evo_drawerController?.closeDrawer(animated: true, completion: { (finished) -> Void in
+                self.drawerController?.closeDrawer(animated: true, completion: { (finished) -> Void in
                     if drawerSide == DrawerSide.left {
-                        self.evo_drawerController?.leftDrawerViewController = nil
+                        self.drawerController?.leftDrawerViewController = nil
                         self.navigationItem.setLeftBarButtonItems(nil, animated: true)
                     } else if drawerSide == .right {
-                        self.evo_drawerController?.rightDrawerViewController = nil
+                        self.drawerController?.rightDrawerViewController = nil
                         self.navigationItem.setRightBarButtonItems(nil, animated: true)
                     }
                     
@@ -256,12 +256,12 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
                 if drawerSide == .left {
                     let vc = ExampleLeftSideDrawerViewController()
                     let navC = UINavigationController(rootViewController: vc)
-                    self.evo_drawerController?.leftDrawerViewController = navC
+                    self.drawerController?.leftDrawerViewController = navC
                     self.setupLeftMenuButton()
                 } else if drawerSide == .right {
                     let vc = ExampleRightSideDrawerViewController()
                     let navC = UINavigationController(rootViewController: vc)
-                    self.evo_drawerController?.rightDrawerViewController = navC
+                    self.drawerController?.rightDrawerViewController = navC
                     self.setupRightMenuButton()
                 }
                 
@@ -277,18 +277,18 @@ class ExampleCenterTableViewController: ExampleViewController, UITableViewDataSo
     // MARK: - Button Handlers
     
     func leftDrawerButtonPress(_ sender: AnyObject?) {
-        self.evo_drawerController?.toggleDrawerSide(.left, animated: true, completion: nil)
+        self.drawerController?.toggleDrawerSide(.left, animated: true, completion: nil)
     }
     
     func rightDrawerButtonPress(_ sender: AnyObject?) {
-        self.evo_drawerController?.toggleDrawerSide(.right, animated: true, completion: nil)
+        self.drawerController?.toggleDrawerSide(.right, animated: true, completion: nil)
     }
     
     func doubleTap(_ gesture: UITapGestureRecognizer) {
-        self.evo_drawerController?.bouncePreview(for: .left, completion: nil)
+        self.drawerController?.bouncePreview(for: .left, completion: nil)
     }
     
     func twoFingerDoubleTap(_ gesture: UITapGestureRecognizer) {
-        self.evo_drawerController?.bouncePreview(for: .right, completion: nil)
+        self.drawerController?.bouncePreview(for: .right, completion: nil)
     }
 }

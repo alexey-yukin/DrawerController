@@ -70,7 +70,7 @@ class ExampleRightSideDrawerViewController: ExampleSideDrawerViewController {
         
         if (indexPath as NSIndexPath).section == DrawerSection.drawerWidth.rawValue {
             let width = self.drawerWidths[(indexPath as NSIndexPath).row]
-            let drawerWidth = self.evo_drawerController?.maximumRightDrawerWidth
+            let drawerWidth = self.drawerController?.maximumRightDrawerWidth
             
             if drawerWidth == width {
                 cell.accessoryType = .checkmark
@@ -86,7 +86,7 @@ class ExampleRightSideDrawerViewController: ExampleSideDrawerViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).section == DrawerSection.drawerWidth.rawValue {
-            self.evo_drawerController?.setMaximumRightDrawerWidth(self.drawerWidths[(indexPath as NSIndexPath).row], animated: true, completion: { (finished) -> Void in
+            self.drawerController?.setMaximumRightDrawerWidth(self.drawerWidths[(indexPath as NSIndexPath).row], animated: true, completion: { (finished) -> Void in
                 tableView.reloadSections(IndexSet(integer: (indexPath as NSIndexPath).section), with: .none)
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
                 tableView.deselectRow(at: indexPath, animated: true)

@@ -21,7 +21,7 @@
 import UIKit
 
 public extension UIViewController {
-    var evo_drawerController: DrawerController? {
+    var drawerController: DrawerController? {
         var parentViewController = self.parent
         
         while parentViewController != nil {
@@ -35,8 +35,8 @@ public extension UIViewController {
         return nil
     }
     
-    var evo_visibleDrawerFrame: CGRect {
-        if let drawerController = self.evo_drawerController {
+    var visibleDrawerFrame: CGRect {
+        if let drawerController = self.drawerController {
             if drawerController.leftDrawerViewController != nil {
                 if self == drawerController.leftDrawerViewController || self.navigationController == drawerController.leftDrawerViewController {
                     var rect = drawerController.view.bounds
@@ -721,7 +721,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         if let sideDrawerViewControllerToPresent = self.sideDrawerViewController(for: drawer) {
             sideDrawerViewControllerToPresent.view.isHidden = false
             self.resetDrawerVisualState(for: drawer)
-            sideDrawerViewControllerToPresent.view.frame = sideDrawerViewControllerToPresent.evo_visibleDrawerFrame
+            sideDrawerViewControllerToPresent.view.frame = sideDrawerViewControllerToPresent.visibleDrawerFrame
             self.updateDrawerVisualState(for: drawer, percentVisible: 0.0)
             sideDrawerViewControllerToPresent.beginAppearanceTransition(true, animated: animated)
         }
@@ -806,13 +806,13 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 
                 UIView.animate(withDuration: duration, delay: 0.0, usingSpringWithDamping: self.drawerDampingFactor, initialSpringVelocity: self.animationVelocity / distance, options: [], animations: { () -> Void in
                     self.centerContainerView.frame = newCenterRect
-                    sideDrawerViewController.view.frame = sideDrawerViewController.evo_visibleDrawerFrame
+                    sideDrawerViewController.view.frame = sideDrawerViewController.visibleDrawerFrame
                     }, completion: { (finished) -> Void in
                         completion?(finished)
                         return
                 })
             } else {
-                sideDrawerViewController.view.frame = sideDrawerViewController.evo_visibleDrawerFrame
+                sideDrawerViewController.view.frame = sideDrawerViewController.visibleDrawerFrame
                 completion?(true)
             }
         }
@@ -872,7 +872,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             
             viewController!.didMove(toParentViewController: self)
             viewController!.view.autoresizingMask = autoResizingMask
-            viewController!.view.frame = viewController!.evo_visibleDrawerFrame
+            viewController!.view.frame = viewController!.visibleDrawerFrame
         }
     }
     
@@ -1027,7 +1027,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                             self.resetDrawerVisualState(for: self.openSide)
                             
                             if sideDrawerViewController != nil {
-                                sideDrawerViewController!.view.frame = sideDrawerViewController!.evo_visibleDrawerFrame
+                                sideDrawerViewController!.view.frame = sideDrawerViewController!.visibleDrawerFrame
                             }
                             
                             self.openSide = .none
